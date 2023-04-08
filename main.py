@@ -10,6 +10,9 @@ import random
 """imported pyperclip module"""
 import pyperclip
 
+"""imported json module"""
+import json
+
 """constant"""
 FONT = ("Courier", 20, "bold")
 
@@ -50,17 +53,28 @@ def addData():
     website = entryWebsite.get()
     emailUsername = entryEmailUsername.get()
     password = entryPassword.get()
+    newData = {
+        website: {
+            "email": emailUsername,
+            "password": password
+        }
+    }
 
     if len(website) == 0 or len(emailUsername) == 0 or len(password) == 0:
         messagebox.showwarning(message="Please don't leave any fields empty!")
     else:
-        isOk = messagebox.askokcancel(message=f"Entered details:\nWebsite: {website}\nEmail/Username: {emailUsername}\nPassword: {password}\nDo you want to save?")
+        with open("data.json", mode="r") as file:
+            """reading the old data"""
+            data = json.load(file)
+            """updating the old data with new data"""
+            data.update(newData)
 
-        if isOk:
-            with open("data.txt", mode="a") as file:
-                file.write(f"{entryWebsite.get()} | {entryEmailUsername.get()} | {entryPassword.get()}\n")
-                entryWebsite.delete(0, END)
-                entryPassword.delete(0, END)
+        with open("data.json", mode="w") as file:
+            """writing the new data"""
+            json.dump(data, file, indent=4)
+
+            entryWebsite.delete(0, END)
+            entryPassword.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
