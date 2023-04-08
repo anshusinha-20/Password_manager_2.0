@@ -87,6 +87,27 @@ def addData():
             entryPassword.delete(0, END)
 
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+"""function to show the data of the website"""
+def showData():
+    website = entryWebsite.get()
+
+    try:
+        with open("data.json", "r") as file:
+            data = json.load(file)
+
+    except FileNotFoundError:
+        messagebox.showwarning(message="No data file exists!")
+
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(message=f"Email: {email}\nPassword: {password}")
+        else:
+            messagebox.showwarning(message=f"No data for {website} exists!")
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 # window
@@ -135,6 +156,10 @@ entryPassword = Entry(width=20)
 entryPassword.grid(row=4, column=2)
 
 # button
+
+"""created the buttonSearch object"""
+buttonSearch = Button(text="Search", width=11, command=showData)
+buttonSearch.grid(row=2, column=3)
 
 """created the buttonPassword object"""
 buttonPassword = Button(text="Generate Password", width=11, command=genPassword)
