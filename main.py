@@ -1,6 +1,9 @@
 """imported every class from the tkinter module"""
 from tkinter import *
 
+"""imported messagebox class from the tkinter module"""
+from tkinter import messagebox
+
 """constant"""
 FONT = ("Courier", 20, "bold")
 
@@ -9,10 +12,21 @@ FONT = ("Courier", 20, "bold")
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 """function to store the data in a file"""
 def addData():
-    with open("data.txt", mode="a") as file:
-        file.write(f"{entryWebsite.get()} | {entryEmailUsername.get()} | {entryPassword.get()}\n")
-        entryWebsite.delete(0, END)
-        entryPassword.delete(0, END)
+    website = entryWebsite.get()
+    emailUsername = entryEmailUsername.get()
+    password = entryPassword.get()
+
+    if len(website) == 0 or len(emailUsername) == 0 or len(password) == 0:
+        messagebox.showwarning(message="Please don't leave any fields empty!")
+    else:
+        isOk = messagebox.askokcancel(message=f"Entered details:\nWebsite: {website}\nEmail/Username: {emailUsername}\nPassword: {password}\nDo you want to save?")
+
+        if isOk:
+            with open("data.txt", mode="a") as file:
+                file.write(f"{entryWebsite.get()} | {entryEmailUsername.get()} | {entryPassword.get()}\n")
+                entryWebsite.delete(0, END)
+                entryPassword.delete(0, END)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
