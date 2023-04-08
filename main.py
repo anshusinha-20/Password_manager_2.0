@@ -4,10 +4,45 @@ from tkinter import *
 """imported messagebox class from the tkinter module"""
 from tkinter import messagebox
 
+"""imported random module"""
+import random
+
+"""imported pyperclip module"""
+import pyperclip
+
 """constant"""
 FONT = ("Courier", 20, "bold")
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+"""function to generate password"""
+def genPassword():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+               'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D',
+               'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+               'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+    nrLetters = random.randint(8, 10)
+    nrSymbols = random.randint(2, 4)
+    nrNumbers = random.randint(2, 4)
+
+    passwordLetters = [random.choice(letters) for char in range(nrLetters)]
+    passwordSymbols = [random.choice(symbols) for sym in range(nrSymbols)]
+    passwordNumbers = [random.choice(numbers) for num in range(nrNumbers)]
+
+    passwordList = passwordLetters + passwordSymbols + passwordNumbers
+
+    random.shuffle(passwordList)
+
+    password = "".join(passwordList)
+
+    entryPassword.insert(0, password)
+
+    pyperclip.copy(password)
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 """function to store the data in a file"""
@@ -78,7 +113,7 @@ entryPassword.grid(row=4, column=2)
 # button
 
 """created the buttonPassword object"""
-buttonPassword = Button(text="Generate Password", width=11)
+buttonPassword = Button(text="Generate Password", width=11, command=genPassword)
 buttonPassword.grid(row=4, column=3)
 
 """created the buttonAdd object"""
