@@ -63,16 +63,26 @@ def addData():
     if len(website) == 0 or len(emailUsername) == 0 or len(password) == 0:
         messagebox.showwarning(message="Please don't leave any fields empty!")
     else:
-        with open("data.json", mode="r") as file:
-            """reading the old data"""
-            data = json.load(file)
+
+        try:
+            with open("data.json", mode="r") as file:
+                """reading the old data"""
+                data = json.load(file)
+
+        except FileNotFoundError:
+            with open("data.json", mode="w") as file:
+                """creating the json file if it doesn't exist"""
+                json.dump(newData, file, indent=4)
+
+        else:
             """updating the old data with new data"""
             data.update(newData)
 
-        with open("data.json", mode="w") as file:
-            """writing the new data"""
-            json.dump(data, file, indent=4)
+            with open("data.json", mode="w") as file:
+                """writing the new data"""
+                json.dump(data, file, indent=4)
 
+        finally:
             entryWebsite.delete(0, END)
             entryPassword.delete(0, END)
 
